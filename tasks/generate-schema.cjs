@@ -35,6 +35,19 @@ function selectPackage(parsed, packageName) {
     throw new Error(`package <${ packageName }> not found in XMI`);
   }
 
+  // Nested UML packages are parsed through `packagedElement`, not `parsePackage`,
+  // so cmof-parser does not attach the package prefix/normalized URI metadata that
+  // moddle descriptors require. Restore only those metadata fields here; the OMG
+  // XMI source remains unchanged and the transform still derives the final URI
+  // from the normative XSD.
+  selected.prefix = selected.prefix || selected.name.toLowerCase();
+
+  if (!selected.uri && selected.URI) {
+    selected.uri = selected.URI.replace(/-XMI$|\.xmi/, '');
+  }
+
+  delete selected.URI;
+
   parsed.elementsByType[ 'uml:Package' ] = [
     selected,
     ...packages.filter(pkg => pkg !== selected)
