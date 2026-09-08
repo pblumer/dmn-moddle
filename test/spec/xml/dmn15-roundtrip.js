@@ -13,6 +13,9 @@ describe('dmn-moddle - DMN 1.5 roundtrip', function() {
   it('imports, writes and re-imports a typed DMN 1.5 decision table with DMNDI', async function() {
     const moddle = createModdle(undefined, { dmnVersion: '1.5' });
 
+    expect(moddle.getPackage('dmn').uri).to.equal('https://www.omg.org/spec/DMN/20230324/MODEL/');
+    expect(moddle.getPackage('dmndi').uri).to.equal('https://www.omg.org/spec/DMN/20230324/DMNDI/');
+
     const {
       rootElement: definitions,
       warnings
