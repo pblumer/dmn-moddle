@@ -57,10 +57,12 @@ function assertBoxedCollections(definitions) {
   const everyExpression = findElement(definitions, 'Decision_Every').decisionLogic;
   const someExpression = findElement(definitions, 'Decision_Some').decisionLogic;
 
-  expect(everyExpression.$type).to.equal('dmn:Quantified');
+  expect(everyExpression.$type).to.equal('dmn:Every');
+  expect(everyExpression.$instanceOf('dmn:Quantified')).to.be.true;
   expect(everyExpression.iteratorVariable).to.equal('x');
   expect(everyExpression.satisfies.value.$type).to.equal('dmn:LiteralExpression');
-  expect(someExpression.$type).to.equal('dmn:Quantified');
+  expect(someExpression.$type).to.equal('dmn:Some');
+  expect(someExpression.$instanceOf('dmn:Quantified')).to.be.true;
   expect(someExpression.iteratorVariable).to.equal('x');
   expect(someExpression.satisfies.value.$type).to.equal('dmn:LiteralExpression');
 
