@@ -1,0 +1,47 @@
+name: Bootstrap DMN 1.5 schemas
+
+on:
+  push:
+    branches:
+      - feature/dmn-1.5-xmi-descriptors
+
+permissions:
+  contents: write
+
+jobs:
+  vendor:
+    if: ${{ !contains(github.event.head_commit.message, '[skip schema-bootstrap]') }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Vendor pinned OMG DMN 1.5 schemas
+        shell: bash
+        run: |
+          set -euo pipefail
+          OMG_COMMIT=005a42a22a7f3332768bb62ef47f091023e05e35
+          BASE="https://raw.githubusercontent.com/omg-dmn-taskforce/omg-dmn-spec/${OMG_COMMIT}"
+
+          curl --fail --location --silent --show-error "${BASE}/xmi/DMN15.xmi" -o resources/dmn/xmi/DMN15.xmi
+          curl --fail --location --silent --show-error "${BASE}/xmi/DMNDI15.xmi" -o resources/dmn/xmi/DMNDI15.xmi
+          curl --fail --location --silent --show-error "${BASE}/xsd/DMN15.xsd" -o resources/dmn/xsd/DMN15.xsd
+          curl --fail --location --silent --show-error "${BASE}/xsd/DMNDI15.xsd" -o resources/dmn/xsd/DMNDI15.xsd
+
+      - name: Commit vendored schema sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add resources/dmn/xmi/DMN15.xmi resources/dmn/xmi/DMNDI15.xmi resources/dmn/xsd/DMN15.xsd resources/dmn/xsd/DMNDI15.xsd
+
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+
+          git commit -m "chore: vendor OMG DMN 1.5 schemas [skip schema-bootstrap]"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
