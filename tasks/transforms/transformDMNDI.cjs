@@ -9,7 +9,7 @@ const {
   removeWhitespace
 } = require('./helper.cjs');
 
-module.exports = async function(results) {
+module.exports = async function(results, options = {}) {
   const { elementsByType } = results;
 
   let model = elementsByType[ 'uml:Package' ][ 0 ];
@@ -70,7 +70,8 @@ module.exports = async function(results) {
 
   model = removeWhitespace(model);
 
-  const file = fs.readFileSync('resources/dmn/xsd/DMNDI13.xsd', 'utf8');
+  const xsdPath = options.xsdFile || 'resources/dmn/xsd/DMNDI13.xsd';
+  const file = fs.readFileSync(xsdPath, 'utf8');
 
   const xsd = await parseXML(file);
 

@@ -13,9 +13,10 @@ const {
   removeWhitespace
 } = require('./helper.cjs');
 
-module.exports = async function(results) {
+module.exports = async function(results, options = {}) {
 
-  const xsdFile = fs.readFileSync('resources/dmn/xsd/DMN13.xsd', 'utf8');
+  const xsdPath = options.xsdFile || 'resources/dmn/xsd/DMN13.xsd';
+  const xsdFile = fs.readFileSync(xsdPath, 'utf8');
 
   const dmnXSD = await parseXML(xsdFile);
 
