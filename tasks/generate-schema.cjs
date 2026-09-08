@@ -11,7 +11,13 @@ const {
 
 function normalizeUmlModelRoot(xmi) {
   return xmi
-    .replace('<uml:Model ', '<uml:Package ')
+    .replace(/<uml:Model\b([^>]*)>/, (match, attributes) => {
+      const uri = /\bURI=/.test(attributes)
+        ? ''
+        : ' URI="urn:dmn-moddle:uml-model-root"';
+
+      return `<uml:Package${ attributes }${ uri }>`;
+    })
     .replace('</uml:Model>', '</uml:Package>');
 }
 
