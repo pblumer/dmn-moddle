@@ -19,6 +19,15 @@ jobs:
         with:
           ref: ${{ github.ref_name }}
 
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Vendor pinned OMG DMN 1.5 schemas
         shell: bash
         run: |
@@ -31,17 +40,26 @@ jobs:
           curl --fail --location --silent --show-error "${BASE}/xsd/DMN15.xsd" -o resources/dmn/xsd/DMN15.xsd
           curl --fail --location --silent --show-error "${BASE}/xsd/DMNDI15.xsd" -o resources/dmn/xsd/DMNDI15.xsd
 
-      - name: Commit vendored schema sources
+      - name: Generate moddle descriptors
+        run: npm run generate-schema
+
+      - name: Commit vendored and generated schema files
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add resources/dmn/xmi/DMN15.xmi resources/dmn/xmi/DMNDI15.xmi resources/dmn/xsd/DMN15.xsd resources/dmn/xsd/DMNDI15.xsd
+          git add \
+            resources/dmn/xmi/DMN15.xmi \
+            resources/dmn/xmi/DMNDI15.xmi \
+            resources/dmn/xsd/DMN15.xsd \
+            resources/dmn/xsd/DMNDI15.xsd \
+            resources/dmn/json/dmn15.json \
+            resources/dmn/json/dmndi15.json
 
           if git diff --cached --quiet; then
             exit 0
           fi
 
-          git commit -m "chore: vendor OMG DMN 1.5 schemas [skip schema-bootstrap]"
+          git commit -m "chore: vendor generated DMN 1.5 descriptors [skip schema-bootstrap]"
           git push origin "HEAD:${GITHUB_REF_NAME}"
