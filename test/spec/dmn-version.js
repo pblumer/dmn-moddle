@@ -40,6 +40,20 @@ describe('dmn-moddle - DMN version selection', function() {
   });
 
 
+  it('models DMN 1.5 iterator helper types according to the XSD', function() {
+    const moddle = createModdle(undefined, { dmnVersion: '1.5' });
+
+    const typedChildExpression = moddle.create('dmn:TypedChildExpression');
+    const iterator = moddle.create('dmn:Iterator');
+    const iteratorVariable = moddle.getPropertyDescriptor(iterator, 'iteratorVariable');
+
+    expect(typedChildExpression.$instanceOf('dmn:ChildExpression')).to.be.true;
+    expect(iteratorVariable).to.exist;
+    expect(iteratorVariable.type).to.equal('String');
+    expect(iteratorVariable.isAttr).to.be.true;
+  });
+
+
   it('does not expose DMN 1.5 boxed expression types in the 1.3 default', function() {
     const moddle = createModdle();
 
