@@ -1,3 +1,5 @@
+import { validateXML } from 'xsd-schema-validator';
+
 import { expect } from 'chai';
 
 import {
@@ -6,9 +8,12 @@ import {
 } from '../../helper.js';
 
 const fixture = 'test/fixtures/dmn15/decision-table.dmn';
+const xsd = 'resources/dmn/xsd/DMN15.xsd';
 
 
 describe('dmn-moddle - DMN 1.5 roundtrip', function() {
+
+  this.timeout(30000);
 
   it('imports, writes and re-imports a typed DMN 1.5 decision table with DMNDI', async function() {
     const moddle = createModdle(undefined, { dmnVersion: '1.5' });
@@ -37,6 +42,8 @@ describe('dmn-moddle - DMN 1.5 roundtrip', function() {
     expect(xml).to.include('https://www.omg.org/spec/DMN/20230324/DMNDI/');
     expect(xml).to.include('DMNShape_Decision_Eligibility');
     expect(xml).to.include('DMNEdge_InformationRequirement_Age');
+
+    await validateXML(xml, xsd);
 
     const {
       rootElement: reimported,
