@@ -1,6 +1,5 @@
 {
   "name": "DMN",
-  "URI": "https://www.omg.org/spec/DMN/20230324/DMN15.xmi",
   "types": [
     {
       "name": "AuthorityRequirement",
@@ -1279,8 +1278,9 @@
     }
   ],
   "associations": [],
+  "prefix": "dmn",
+  "uri": "https://www.omg.org/spec/DMN/20230324/MODEL/",
   "xml": {
     "tagAlias": "lowerCase"
-  },
-  "uri": "https://www.omg.org/spec/DMN/20230324/MODEL/"
+  }
 }
