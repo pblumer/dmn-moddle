@@ -40,6 +40,19 @@ describe('dmn-moddle - DMN version selection', function() {
   });
 
 
+  it('exposes every and some as quantified element identities', function() {
+    const moddle = createModdle(undefined, { dmnVersion: '1.5' });
+
+    [ 'Every', 'Some' ].forEach(typeName => {
+      const element = moddle.create(`dmn:${ typeName }`);
+
+      expect(element.$type).to.equal(`dmn:${ typeName }`);
+      expect(element.$instanceOf('dmn:Quantified')).to.be.true;
+      expect(element.$instanceOf('dmn:Expression')).to.be.true;
+    });
+  });
+
+
   it('models DMN 1.5 iterator helper types according to the XSD', function() {
     const moddle = createModdle(undefined, { dmnVersion: '1.5' });
 
@@ -58,6 +71,8 @@ describe('dmn-moddle - DMN version selection', function() {
     const moddle = createModdle();
 
     expect(() => moddle.create('dmn:Conditional')).to.throw;
+    expect(() => moddle.create('dmn:Every')).to.throw;
+    expect(() => moddle.create('dmn:Some')).to.throw;
   });
 
 

@@ -60,5 +60,19 @@ module.exports = async function(results, options = {}) {
     });
   }
 
+  // DMN 1.5 defines the XML elements <every> and <some> with the shared XSD
+  // type tQuantified. moddle resolves polymorphic expression elements by their
+  // XML tag name, therefore expose two descriptor-only element identities that
+  // inherit the common Quantified semantics. With the package's lowerCase tag
+  // alias they round-trip as <every> and <some> while remaining Quantified.
+  for (const name of [ 'Every', 'Some' ]) {
+    if (!transformed.types.find(type => type.name === name)) {
+      transformed.types.push({
+        name,
+        superClass: [ 'Quantified' ]
+      });
+    }
+  }
+
   return transformed;
 };

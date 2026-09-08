@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+             namespace="https://example.com/dmn15/decision-service"
+             name="DecisionServices" id="Definitions_Service">
+  <inputData id="Input_Age" name="Applicant Age">
+    <variable name="Applicant Age" typeRef="number"/>
+  </inputData>
+  <decision id="Decision_Eligibility" name="Eligibility">
+    <variable name="Eligibility" typeRef="string"/>
+    <informationRequirement>
+      <requiredInput href="#Input_Age"/>
+    </informationRequirement>
+    <literalExpression><text>if Applicant Age &gt;= 18 then "ELIGIBLE" else "INELIGIBLE"</text></literalExpression>
+  </decision>
+  <decision id="Decision_Routing" name="Routing">
+    <variable name="Routing" typeRef="string"/>
+    <informationRequirement>
+      <requiredDecision href="#Decision_Eligibility"/>
+    </informationRequirement>
+    <literalExpression><text>if Eligibility = "ELIGIBLE" then "ACCEPT" else "DECLINE"</text></literalExpression>
+  </decision>
+  <decisionService id="Service_Approval" name="Approval">
+    <outputDecision href="#Decision_Routing"/>
+    <encapsulatedDecision href="#Decision_Eligibility"/>
+    <inputData href="#Input_Age"/>
+  </decisionService>
+  <decisionService id="Service_RoutingOnly" name="Routing Only">
+    <outputDecision href="#Decision_Routing"/>
+    <inputDecision href="#Decision_Eligibility"/>
+  </decisionService>
+</definitions>
