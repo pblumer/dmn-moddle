@@ -8,6 +8,7 @@ const {
   transformDMN,
   transformDMNDI
 } = require('./transforms/index.cjs');
+const transformDMN15 = require('./transforms/transformDMN15.cjs');
 
 function normalizeUmlModelRoot(xmi) {
   return xmi
@@ -102,7 +103,7 @@ generateSchema([
   {
     source: 'resources/dmn/xmi/DMN15.xmi',
     target: 'resources/dmn/json/dmn15.json',
-    transform: transformDMN,
+    transform: transformDMN15,
     packageName: 'DMN',
     transformOptions: {
       xsdFile: 'resources/dmn/xsd/DMN15.xsd'
