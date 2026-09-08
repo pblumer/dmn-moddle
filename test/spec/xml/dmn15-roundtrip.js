@@ -11,7 +11,7 @@ const fixture = 'test/fixtures/dmn15/decision-table.dmn';
 describe('dmn-moddle - DMN 1.5 roundtrip', function() {
 
   it('imports, writes and re-imports a typed DMN 1.5 decision table with DMNDI', async function() {
-    const moddle = createModdle();
+    const moddle = createModdle(undefined, { dmnVersion: '1.5' });
 
     const {
       rootElement: definitions,
