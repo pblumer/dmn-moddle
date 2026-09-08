@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+             namespace="https://example.com/dmn15/boxed-collections"
+             name="BoxedCollections" id="Definitions_Collections">
+  <inputData id="Input_Threshold" name="Threshold">
+    <variable name="Threshold" typeRef="number"/>
+  </inputData>
+  <decision id="Decision_List" name="Numbers">
+    <variable name="Numbers"/>
+    <list>
+      <literalExpression><text>1</text></literalExpression>
+      <literalExpression><text>2</text></literalExpression>
+      <literalExpression><text>3</text></literalExpression>
+    </list>
+  </decision>
+  <decision id="Decision_Relation" name="People">
+    <variable name="People"/>
+    <relation>
+      <column name="name"/>
+      <column name="age"/>
+      <row>
+        <literalExpression><text>"Ann"</text></literalExpression>
+        <literalExpression><text>30</text></literalExpression>
+      </row>
+      <row>
+        <literalExpression><text>"Bob"</text></literalExpression>
+        <literalExpression><text>15</text></literalExpression>
+      </row>
+    </relation>
+  </decision>
+  <decision id="Decision_Conditional" name="Grade">
+    <variable name="Grade" typeRef="string"/>
+    <conditional>
+      <if><literalExpression><text>Threshold &gt; 5</text></literalExpression></if>
+      <then><literalExpression><text>"high"</text></literalExpression></then>
+      <else><literalExpression><text>"low"</text></literalExpression></else>
+    </conditional>
+  </decision>
+  <decision id="Decision_For" name="Doubled">
+    <variable name="Doubled"/>
+    <for iteratorVariable="x">
+      <in><literalExpression><text>[1, 2, 3]</text></literalExpression></in>
+      <return><literalExpression><text>x * 2</text></literalExpression></return>
+    </for>
+  </decision>
+  <decision id="Decision_Every" name="AllPositive">
+    <variable name="AllPositive" typeRef="boolean"/>
+    <every iteratorVariable="x">
+      <in><literalExpression><text>[1, 2, 3]</text></literalExpression></in>
+      <satisfies><literalExpression><text>x &gt; 0</text></literalExpression></satisfies>
+    </every>
+  </decision>
+  <decision id="Decision_Some" name="AnyBig">
+    <variable name="AnyBig" typeRef="boolean"/>
+    <some iteratorVariable="x">
+      <in><literalExpression><text>[1, 5, 9]</text></literalExpression></in>
+      <satisfies><literalExpression><text>x &gt; Threshold</text></literalExpression></satisfies>
+    </some>
+  </decision>
+  <decision id="Decision_Filter" name="BigNumbers">
+    <variable name="BigNumbers"/>
+    <filter>
+      <in><literalExpression><text>[1, 2, 3, 4]</text></literalExpression></in>
+      <match><literalExpression><text>item &gt; 2</text></literalExpression></match>
+    </filter>
+  </decision>
+</definitions>
