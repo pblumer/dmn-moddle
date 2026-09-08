@@ -26,7 +26,7 @@ describe('dmn-moddle - DMN 1.5 roundtrip', function() {
       warnings
     } = await moddle.fromXML(readFile(fixture), 'dmn:Definitions');
 
-    expect(warnings).to.be.empty;
+    expect(warnings, JSON.stringify(warnings, null, 2)).to.be.empty;
     expect(definitions.$type).to.equal('dmn:Definitions');
 
     const decision = definitions.drgElement.find(element => element.id === 'Decision_Eligibility');
@@ -50,7 +50,7 @@ describe('dmn-moddle - DMN 1.5 roundtrip', function() {
       warnings: reimportWarnings
     } = await moddle.fromXML(xml, 'dmn:Definitions');
 
-    expect(reimportWarnings).to.be.empty;
+    expect(reimportWarnings, JSON.stringify(reimportWarnings, null, 2)).to.be.empty;
     expect(reimported.$type).to.equal('dmn:Definitions');
 
     const reimportedDecision = reimported.drgElement.find(element => element.id === 'Decision_Eligibility');
