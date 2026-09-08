@@ -141,7 +141,7 @@
         },
         {
           "name": "dmnDI",
-          "type": "DMNDI"
+          "type": "dmndi:DMNDI"
         }
       ]
     },
@@ -1103,6 +1103,11 @@
           "xml": {
             "serialize": "property"
           }
+        },
+        {
+          "name": "iteratorVariable",
+          "type": "String",
+          "isAttr": true
         }
       ]
     },
@@ -1168,7 +1173,6 @@
     {
       "name": "TypedChildExpression",
       "superClass": [
-        null,
         "ChildExpression"
       ],
       "properties": [
