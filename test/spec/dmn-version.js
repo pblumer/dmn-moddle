@@ -29,8 +29,7 @@ describe('dmn-moddle - DMN version selection', function() {
     [
       'Conditional',
       'For',
-      'Every',
-      'Some',
+      'Quantified',
       'Filter'
     ].forEach(typeName => {
       const element = moddle.create(`dmn:${ typeName }`);
