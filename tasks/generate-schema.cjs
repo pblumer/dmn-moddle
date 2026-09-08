@@ -15,11 +15,32 @@ function normalizeUmlModelRoot(xmi) {
     .replace('</uml:Model>', '</uml:Package>');
 }
 
+function selectPackage(parsed, packageName) {
+  if (!packageName) {
+    return parsed;
+  }
+
+  const packages = parsed.elementsByType[ 'uml:Package' ] || [];
+  const selected = packages.find(pkg => pkg.name === packageName);
+
+  if (!selected) {
+    throw new Error(`package <${ packageName }> not found in XMI`);
+  }
+
+  parsed.elementsByType[ 'uml:Package' ] = [
+    selected,
+    ...packages.filter(pkg => pkg !== selected)
+  ];
+
+  return parsed;
+}
+
 async function generateSchema(files) {
   for (const file of files) {
     const {
       normalize,
       options,
+      packageName,
       source,
       target,
       transform,
@@ -32,7 +53,9 @@ async function generateSchema(files) {
       sourceContents = normalize(sourceContents);
     }
 
-    const parsed = await parseFile(sourceContents, options);
+    let parsed = await parseFile(sourceContents, options);
+
+    parsed = selectPackage(parsed, packageName);
 
     const transformed = await transform(parsed, transformOptions);
 
@@ -45,9 +68,7 @@ generateSchema([
     source: 'resources/dmn/xmi/DMN13.xmi',
     target: 'resources/dmn/json/dmn13.json',
     transform: transformDMN,
-    transformOptions: {
-      packageName: 'DMN'
-    },
+    packageName: 'DMN',
     options: {
       clean: true,
       prefixNamespaces: {
@@ -63,9 +84,7 @@ generateSchema([
     source: 'resources/dmn/xmi/DMNDI13.xmi',
     target: 'resources/dmn/json/dmndi13.json',
     transform: transformDMNDI,
-    transformOptions: {
-      packageName: 'DMNDI'
-    },
+    packageName: 'DMNDI',
     options: {
       clean: true,
       prefixNamespaces: {
@@ -78,8 +97,8 @@ generateSchema([
     source: 'resources/dmn/xmi/DMN15.xmi',
     target: 'resources/dmn/json/dmn15.json',
     transform: transformDMN,
+    packageName: 'DMN',
     transformOptions: {
-      packageName: 'DMN',
       xsdFile: 'resources/dmn/xsd/DMN15.xsd'
     },
     normalize: normalizeUmlModelRoot,
@@ -98,8 +117,8 @@ generateSchema([
     source: 'resources/dmn/xmi/DMNDI15.xmi',
     target: 'resources/dmn/json/dmndi15.json',
     transform: transformDMNDI,
+    packageName: 'DMNDI',
     transformOptions: {
-      packageName: 'DMNDI',
       xsdFile: 'resources/dmn/xsd/DMNDI15.xsd'
     },
     normalize: normalizeUmlModelRoot,
