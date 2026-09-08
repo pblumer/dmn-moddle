@@ -13,11 +13,12 @@ const transformDMN15 = require('./transforms/transformDMN15.cjs');
 function normalizeUmlModelRoot(xmi) {
   return xmi
     .replace(/<uml:Model\b([^>]*)>/, (match, attributes) => {
-      const uri = /\bURI=/.test(attributes)
+      const packageAttributes = attributes.replace('xmi:type="uml:Model"', 'xmi:type="uml:Package"');
+      const uri = /\bURI=/.test(packageAttributes)
         ? ''
         : ' URI="urn:dmn-moddle:uml-model-root"';
 
-      return `<uml:Package${ attributes }${ uri }>`;
+      return `<uml:Package${ packageAttributes }${ uri }>`;
     })
     .replace('</uml:Model>', '</uml:Package>');
 }
