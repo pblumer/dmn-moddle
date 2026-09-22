@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/"
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             namespace="https://example.com/dmn15/alternative-input-data-shape-on-shape"
+             name="AlternativeInputDataShapeOnShape" id="Definitions_AltShapeOnShape">
+  <inputData id="Input_Age" name="Applicant Age">
+    <variable name="Applicant Age" typeRef="number"/>
+  </inputData>
+  <decision id="Decision_Eligibility" name="Eligibility">
+    <variable name="Eligibility" typeRef="string"/>
+    <informationRequirement>
+      <requiredInput href="#Input_Age"/>
+    </informationRequirement>
+    <literalExpression><text>if Applicant Age &gt;= 18 then "ELIGIBLE" else "INELIGIBLE"</text></literalExpression>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_AltShapeOnShape">
+      <!-- The flag where Table 97 puts it: on the shape that depicts the input data.
+           Not valid against the normative XSD, which carries it on DMNDiagram only —
+           and written by anyone who implemented the prose. -->
+      <dmndi:DMNShape id="DMNShape_Input_Age" dmnElementRef="Input_Age" useAlternativeInputDataShape="true">
+        <dc:Bounds x="100" y="200" width="125" height="45"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_Decision_Eligibility" dmnElementRef="Decision_Eligibility">
+        <dc:Bounds x="100" y="80" width="180" height="80"/>
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

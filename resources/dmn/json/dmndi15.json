@@ -116,7 +116,8 @@
         },
         {
           "name": "useAlternativeInputDataShape",
-          "type": "UML_Standard_Profile.mdzip:eee_1045467100323_191782_59"
+          "type": "Boolean",
+          "isAttr": true
         }
       ]
     },
@@ -181,6 +182,11 @@
         },
         {
           "name": "isCollapsed",
+          "isAttr": true,
+          "type": "Boolean"
+        },
+        {
+          "name": "useAlternativeInputDataShape",
           "isAttr": true,
           "type": "Boolean"
         }
