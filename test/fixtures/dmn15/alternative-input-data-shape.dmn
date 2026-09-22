@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/"
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             namespace="https://example.com/dmn15/alternative-input-data-shape"
+             name="AlternativeInputDataShape" id="Definitions_AltShape">
+  <inputData id="Input_Age" name="Applicant Age">
+    <variable name="Applicant Age" typeRef="number"/>
+  </inputData>
+  <decision id="Decision_Eligibility" name="Eligibility">
+    <variable name="Eligibility" typeRef="string"/>
+    <informationRequirement>
+      <requiredInput href="#Input_Age"/>
+    </informationRequirement>
+    <literalExpression><text>if Applicant Age &gt;= 18 then "ELIGIBLE" else "INELIGIBLE"</text></literalExpression>
+  </decision>
+  <dmndi:DMNDI>
+    <!-- The flag where the normative XSD puts it: on the diagram. -->
+    <dmndi:DMNDiagram id="DMNDiagram_AltShape" useAlternativeInputDataShape="true">
+      <dmndi:DMNShape id="DMNShape_Input_Age" dmnElementRef="Input_Age">
+        <dc:Bounds x="100" y="200" width="125" height="45"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_Decision_Eligibility" dmnElementRef="Decision_Eligibility">
+        <dc:Bounds x="100" y="80" width="180" height="80"/>
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
